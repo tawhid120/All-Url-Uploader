@@ -1,0 +1,30 @@
+{
+  "variables": {
+    "BOT_TOKEN": {
+      "description": "Your Telegram Bot Token from BotFather"
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram User ID"
+    },
+    "AUTH_USERS": {
+      "description": "Optional comma-separated list of authorized user IDs",
+      "value": ""
+    },
+    "DOWNLOAD_LOCATION": {
+      "description": "Download directory",
+      "value": "./DOWNLOADS"
+    },
+    "CHUNK_SIZE": {
+      "description": "Download chunk size",
+      "value": "128"
+    },
+    "HTTP_PROXY": {
+      "description": "Optional HTTP proxy URL",
+      "value": ""
+    },
+    "PROCESS_MAX_TIMEOUT": {
+      "description": "Process timeout in seconds",
+      "value": "3700"
+    }
+  }
+}
