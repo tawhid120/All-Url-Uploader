@@ -14,6 +14,7 @@ from utils.models import DownloadArtifact, DownloadOption, ParsedInput
 
 VIDEO_EXTENSIONS = {"mp4", "mkv", "webm", "mov"}
 AUDIO_EXTENSIONS = {"mp3", "m4a", "aac", "wav", "flac", "opus", "weba"}
+DOCUMENT_EXTENSIONS = {"zip", "pdf", "txt", "7z", "rar", "tar", "gz"}
 logger = logging.getLogger(__name__)
 
 
@@ -94,13 +95,13 @@ def build_quick_youtube_options() -> list[DownloadOption]:
     return [
         DownloadOption(
             option_id="quick_audio",
-            label="Audio",
+            label="🎵 Audio (MP3)",
             send_type="audio",
             mode="youtube_quick",
         ),
         DownloadOption(
             option_id="quick_video",
-            label="Video",
+            label="🎬 Video (MP4)",
             send_type="video",
             mode="youtube_quick",
         ),
@@ -110,6 +111,8 @@ def build_quick_youtube_options() -> list[DownloadOption]:
 def build_ytdlp_options(info: dict) -> list[DownloadOption]:
     options: list[DownloadOption] = []
     formats = info.get("formats") or []
+    
+    # Collect video formats
     for index, format_data in enumerate(formats):
         format_note = format_data.get("format_note") or format_data.get("format")
         if format_note and "dash" in format_note.lower():
@@ -131,18 +134,20 @@ def build_ytdlp_options(info: dict) -> list[DownloadOption]:
             )
         )
 
+    # Add audio options if duration exists
     if info.get("duration"):
         for quality in ("64k", "128k", "320k"):
             options.append(
                 DownloadOption(
                     option_id=_option_id("audio", len(options)),
-                    label=f"MP3 ({quality})",
+                    label=f"🎵 MP3 ({quality})",
                     send_type="audio",
                     mode="ytdlp_audio",
                     file_ext="mp3",
                     audio_quality=quality,
                 )
             )
+    
     return options
 
 
@@ -161,11 +166,13 @@ def build_direct_options(
         send_type = "video"
     elif ext and ext.lower() in AUDIO_EXTENSIONS:
         send_type = "audio"
+    elif ext and ext.lower() in DOCUMENT_EXTENSIONS:
+        send_type = "document"
 
     options = [
         DownloadOption(
             option_id="direct_primary",
-            label="Send as media" if send_type != "document" else "Send as document",
+            label=f"📥 Send as {'video' if send_type == 'video' else 'audio' if send_type == 'audio' else 'document'}",
             send_type=send_type,
             mode="direct",
             file_ext=ext,
@@ -175,7 +182,7 @@ def build_direct_options(
         options.append(
             DownloadOption(
                 option_id="direct_document",
-                label="Send as document",
+                label="📄 Send as document",
                 send_type="document",
                 mode="direct",
                 file_ext=ext,
