@@ -118,6 +118,7 @@ async def request_callback(
             artifact=artifact,
             thumbnail_path=thumbnail_store.get(query.from_user.id),
             started_at=started_at,
+            settings=settings,
         )
         logger.info(
             "Completed request action | user=%s token=%s file=%s send_type=%s",
