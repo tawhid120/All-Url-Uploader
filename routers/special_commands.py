@@ -44,7 +44,7 @@ async def cleanup_command(message: Message, settings: Settings) -> None:
 
 
 @router.message(Command("swaplast"), F.chat.type == "private")
-asyncync def swaplast_command(message: Message, settings: Settings) -> None:
+async def swaplast_command(message: Message, settings: Settings) -> None:
     """Re-download the last file in opposite format (video->audio or audio->video)"""
     if not message.from_user:
         return
