@@ -12,6 +12,7 @@ from routers.callbacks import router as callbacks_router
 from routers.commands import router as commands_router
 from routers.intake import router as intake_router
 from routers.thumbnails import router as thumbnails_router
+from routers.special_commands import router as special_commands_router
 from services.cooldown import CooldownManager
 from services.request_store import RequestStore
 from services.thumbnail_store import ThumbnailStore
@@ -20,6 +21,7 @@ from services.thumbnail_store import ThumbnailStore
 def create_dispatcher(settings: Settings) -> Dispatcher:
     dispatcher = Dispatcher()
     dispatcher.include_router(commands_router)
+    dispatcher.include_router(special_commands_router)
     dispatcher.include_router(thumbnails_router)
     dispatcher.include_router(intake_router)
     dispatcher.include_router(callbacks_router)
